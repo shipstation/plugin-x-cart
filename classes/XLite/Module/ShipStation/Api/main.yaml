@@ -1,0 +1,11 @@
+version: 5.5.0.0
+type: common
+authorName: ShipStation
+moduleName: ShipStation
+description: 'Wherever you sell, however you ship, ShipStation helps you create shipping labels easily and efficiently.'
+minorRequiredCoreVersion: 0
+dependsOn: {  }
+incompatibleWith: {  }
+skins: {  }
+showSettingsForm: false
+canDisable: true
