@@ -38,7 +38,7 @@ class Order extends \XLite\Model\Repo\ARepo implements \XLite\Base\IDecorator
      */
     public function addOrderTrackingNumber($intOrderNumber = 0, $intTrackingNumber = 0) 
     {
-        \Includes\Utils\Database::execute("INSERT INTO " . \Includes\Utils\Database::getTablesPrefix() . "order_tracking_number (order_id, value, creation_date) VALUES ($intOrderNumber, '$intTrackingNumber', NOW())");
+        \Includes\Utils\Database::execute("INSERT INTO " . \Includes\Utils\Database::getTablesPrefix() . "order_tracking_number (order_id, value, creationDate) VALUES ($intOrderNumber, '$intTrackingNumber', NOW())");
     }
     /**
      * Set the Shipping Service Mappings
