@@ -40,7 +40,7 @@ class Order extends \XLite\Model\Repo\ARepo implements \XLite\Base\IDecorator
     {
         $version = \XLite\Module\ShipStation\Api\Main::getMajorVersion();
         if (floatval($version) >= 5.4) {
-            \Includes\Utils\Database::execute("INSERT INTO " . \Includes\Utils\Database::getTablesPrefix() . "order_tracking_number (order_id, value, creationDate) VALUES (:order_id, :tracking_number, NOW())", array(
+            \Includes\Utils\Database::execute("INSERT INTO " . \Includes\Utils\Database::getTablesPrefix() . "order_tracking_number (order_id, value, creationDate) VALUES (:order_id, :tracking_number, UNIX_TIMESTAMP())", array(
                 ':order_id' => $intOrderNumber,
                 ':tracking_number' => $intTrackingNumber
             ));
