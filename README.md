@@ -1,7 +1,8 @@
 # plugin-x-cart
 How to update the X-Cart Plugin for ShipStation:
 
-1. Downloaded XCart installation package https://kb.x-cart.com/general_setup/installation/installation_guide.html
+1. X-Cart Installation guide: https://kb.x-cart.com/general_setup/installation/installation_guide.html
+    - Link to download X-Cart: https://raw.githubusercontent.com/xcart/jobs/master/assets/x-cart-downloadable.tgz
 
 2. Download MySQL and install it: https://www.mysql.com/downloads/
 
@@ -19,10 +20,11 @@ How to update the X-Cart Plugin for ShipStation:
 
 9. Now you should be able to go into “My Addons” and find ShipStation (based on the default apps, it was on page 3 for me)
 
-10. It should now show the “pack it” link as shown in this xcart doc:  https://devs.x-cart.com/getting_started/creating-module.html#packing-up-your-module
+10. It should now show the “pack it” link as shown in this X-Cart doc:  https://devs.x-cart.com/getting_started/creating-module.html#packing-up-your-module
+    - You might need to switch to "List View" to see the "pack it" icon
 
 11. When you click the Pack It link, a .tgz file should download.
 
-12. Log into the vender account of xcart: https://my.x-cart.com/stores/3936
+12. Log into the vender account of X-Cart: https://my.x-cart.com/stores/3936
 
 You should now be able to upload the module without errors!
