@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: .
+      tags:
+        - shipstation-plugin-x-cart
+    depends_on:
+      - db
+      - mail
+    ports:
+      - "8080:80"
+      - "4443:443"
+    volumes:
+      - xcart:/var/www/xcart
+      - ./modules/ShipStation:/var/www/xcart/modules/ShipStation
+  db:
+    image: mysql
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootp@ss
+      MYSQL_USER: xcart
+      MYSQL_PASSWORD: xcart
+      MYSQL_DATABASE: xcart
+    ports:
+      - "3306:3306"
+  mail:
+    image: mailhog/mailhog
+    environment:
+      MH_STORAGE: maildir
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    volumes:
+      - maildir:/maildir
+
+volumes:
+  db-data:
+  maildir:
+  xcart:

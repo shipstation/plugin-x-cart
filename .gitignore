@@ -90,5 +90,10 @@ fabric.properties
 .idea/**/markdown-navigator.xml
 .idea/**/markdown-navigator/
 
-# End of https://www.gitignore.io/api/phpstorm.DS_Store
+# End of https://www.gitignore.io/api/phpstorm
 .DS_Store
+
+# X-Cart local dev files
+docker/*.tgz
+docker/xcart
+>>>>>>> 0592b06 (Dockerfile & compose configuration for running X-Cart locally)

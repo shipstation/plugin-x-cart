@@ -21,7 +21,7 @@ How to update the X-Cart Plugin for ShipStation:
 9. Now you should be able to go into “My Addons” and find ShipStation (based on the default apps, it was on page 3 for me)
 
 10. It should now show the “pack it” link as shown in this X-Cart doc:  https://devs.x-cart.com/getting_started/creating-module.html#packing-up-your-module
-    - You might need to switch to "List View" to see the "pack it" icon
+   - You might need to switch to "List View" to see the "pack it" icon
 
 11. When you click the Pack It link, a .tgz file should download.
 
@@ -116,7 +116,7 @@ ServerName xcart.test
         XCART_HOST_DETAILS_ADMIN_HOST=xcart.test
         ```
 
-12. Install X-Cart 5.5.x.x: `./bin/install.sh -a xuser@auctane.com:password` (this user will be used to access admin page)
+12. Install X-Cart 5.5.x.x: `./bin/install.sh -a xcartdev@auctane.com:P@ssw0rd_` (this user will be used to access admin page)
 
 13. Change logs must adhere to this stucture and format: `https://developer.x-cart.com/migration_guides/module_changelogs#where-to-put-changelogs`
 
@@ -131,3 +131,79 @@ ServerName xcart.test
 17. Pack the module: `./bin/service xcst:pack-module --source=git --modules=ShipStation-Api`
 
 18. Go to `https://market.x-cart.com/admin.php?target=product&product_id=3634&page=module_versions` and upload the module in the `XC5 Module Files` tab
+
+## Docker Development
+
+Note: All commands below assume that you're in the root directory of this repo.
+
+### Building the image
+
+```shell
+$ docker build -t shipstation-plugin-x-cart .
+# or
+$ docker-compose build
+```
+
+The version of X-Cart to be installed is defined in the [`Dockerfile`](Dockerfile#L4).
+Build arguments can be used to override that by passing
+`--build-arg XCART_VERSION=<number>` to either `docker build` or `docker-compose build`.
+You may need to modify [`docker/env.docker`](docker/env.docker) for older versions
+of X-Cart.
+
+
+### Running X-Cart with local changes
+
+```shell
+$ docker-compose up -d
+```
+
+The first time you run the container you'll need to also run the install script.
+
+```shell
+$ docker-compose exec -it web /bin/bash
+root@<somehash>:/var/www/xcart# runuser -u www-data -- ./bin/install.sh -a xcartdev@example.com:password
+```
+
+Resources:
+* X-Cart: http://localhost:8080
+* X-Cart Admin page: http://localhost:8080/admin/
+* MySQL: localhost:3306
+* Email sent from X-Cart: http://localhost:8025
+
+Other useful commands:
+* Follow the logs: `docker-compose logs -f web` (omit `web` if you want to include mysql & mailhog logs)
+* Stop the containers: `docker-compose stop`
+* Remove all containers and persistent data: `docker-compose down -v`
+
+#### Rebuilding cached PHP files
+
+Go to the [cache management page](http://localhost:8080/admin/?target=cache_management)
+in the browser and click `Start` under "Re-deploy the store" or use the `./bin/service`
+script:
+
+```shell
+$ docker-compose exec -it web /bin/bash
+root@<somehash>:/var/www/xcart# runuser -u www-data -- ./bin/service xcst:rebuild
+```
+
+#### Enabling Debug Mode
+
+Debug mode is off by default because it causes an error in the install script.
+If you want to see stack traces in the browser and access other debug features, set
+`APP_DEBUG=true` and rebuild the assets.
+
+```shell
+$ docker-compose exec -it web /bin/bash
+root@<somehash>:/var/www/xcart# echo "APP_DEBUG=true" >> .env.local
+root@<somehash>:/var/www/xcart# runuser -u www-data -- ./bin/service xcst:rebuild
+```
+
+### Upgrading X-Cart
+
+```shell
+$ docker-compose down
+$ docker-compose rm -v web
+$ docker-compose up --build --build-arg XCART_VERSION=5.X.Y.Z -d
+```
+
+Jump to [Rebuilding cached PHP files](README.md#rebuilding-cached-php-files).
