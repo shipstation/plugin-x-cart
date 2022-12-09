@@ -7,14 +7,18 @@
  * Nor may you transmit it or store it in any other website or other form of electronic retrieval system.
  */
 
-namespace XLite\Module\ShipStation\Api;
+declare(strict_types=1);
 
+namespace ShipStation\ShipStation;
+
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**
  * Module description
  *
  * @package XLite
  */
-abstract class Main extends \XLite\Module\AModule
+
+final class ShipStationBundle extends Bundle
 {
 
     /**
@@ -54,7 +58,7 @@ abstract class Main extends \XLite\Module\AModule
      */
     public static function getMinorVersion() 
     {
-        return '1.2';
+        return '2';
     }
 
     /**

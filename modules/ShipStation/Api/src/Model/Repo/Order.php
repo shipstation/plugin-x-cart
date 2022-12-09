@@ -7,12 +7,17 @@
  * Nor may you transmit it or store it in any other website or other form of electronic retrieval system.
  */
 
-namespace XLite\Module\ShipStation\Api\Model\Repo;
+namespace ShipStation\ShipStation\Model\Repo;
 
+use XCart\Extender\Mapping\Extender;
 /**
  * The Order model repository
  */
-class Order extends \XLite\Model\Repo\ARepo implements \XLite\Base\IDecorator
+
+/**
+ * @Extender\Mixin
+ */
+abstract class Order extends \XLite\Model\Repo\Order
 {
     /**
      * Get the order number from last updated dates
@@ -40,7 +45,7 @@ class Order extends \XLite\Model\Repo\ARepo implements \XLite\Base\IDecorator
     {
         $version = \XLite\Module\ShipStation\Api\Main::getMajorVersion();
         if (floatval($version) >= 5.4) {
-            \Includes\Utils\Database::execute("INSERT INTO " . \Includes\Utils\Database::getTablesPrefix() . "order_tracking_number (order_id, value, creationDate) VALUES (:order_id, :tracking_number, UNIX_TIMESTAMP())", array(
+            \Includes\Utils\Database::execute("INSERT INTO " . \Includes\Utils\Database::getTablesPrefix() . "order_tracking_number (order_id, value, creationDate) VALUES (:order_id, :tracking_number, NOW())", array(
                 ':order_id' => $intOrderNumber,
                 ':tracking_number' => $intTrackingNumber
             ));

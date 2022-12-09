@@ -7,7 +7,7 @@
  * Nor may you transmit it or store it in any other website or other form of electronic retrieval system.
  */
 
-namespace XLite\Module\ShipStation\Api\Controller\Customer;
+namespace ShipStation\ShipStation\Controller\Customer;
 
 /**
  * ShipStation extension controller
@@ -250,7 +250,6 @@ class Api extends \XLite\Controller\Customer\ACustomer
                     $this->addFieldToXML("Country", $objBillingAddress->getCountry()->getCountry());
                     $this->addFieldToXML("CountryCode", $objBillingAddress->getCountry()->getCode());
                 }
-                $this->addFieldToXML("Company", $objBillingAddress->getCompanyName());
                 $this->addFieldToXML("Phone", $objBillingAddress->getPhone());
                 $this->addFieldToXML("Email", $objOrder->getProfile()->getLogin());
                 $this->xmlData .= "\t</BillTo>\n";
@@ -286,7 +285,6 @@ class Api extends \XLite\Controller\Customer\ACustomer
                     $this->addFieldToXML("Country", $objShippingAddress->getCountry()->getCountry());
                     $this->addFieldToXML("CountryCode", $objShippingAddress->getCountry()->getCode());
                 }
-                $this->addFieldToXML("Company", $objShippingAddress->getCompanyName());
                 $this->addFieldToXML("Phone", $objShippingAddress->getPhone());
                 $this->addFieldToXML("Email", $objOrder->getProfile()->getLogin());
                 $this->xmlData .= "\t</ShipTo>\n";
