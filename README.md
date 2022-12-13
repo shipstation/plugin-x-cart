@@ -118,14 +118,16 @@ ServerName xcart.test
 
 12. Install X-Cart 5.5.x.x: `./bin/install.sh -a xuser@auctane.com:password` (this user will be used to access admin page)
 
-13. Access `http://xcart.test/admin/` and log into the admin page.
+13. Change logs must adhere to this stucture and format: `https://developer.x-cart.com/migration_guides/module_changelogs#where-to-put-changelogs`
 
-14. Copy the ShipStation folder to these directories
+14. Access `http://xcart.test/admin/` and log into the admin page.
+
+15. Copy the ShipStation folder to these directories
     - <xcart installation directory>/xcart/modules
     - <xcart installation directory>/xcart/var/packs/xcart/modules
 
-15. Rebuild X-Cart: `./bin/service xcst:rebuild --enable ShipStation-Api`
+16. Rebuild X-Cart: `./bin/service xcst:rebuild --enable ShipStation-Api`
 
-16. Pack the module: `./bin/service xcst:pack-module --source=git --modules=ShipStation-Api`
+17. Pack the module: `./bin/service xcst:pack-module --source=git --modules=ShipStation-Api`
 
-17. Go to `https://market.x-cart.com/admin.php?target=product&product_id=3634&page=module_versions` and upload the module in the `XC5 Module Files` tab
+18. Go to `https://market.x-cart.com/admin.php?target=product&product_id=3634&page=module_versions` and upload the module in the `XC5 Module Files` tab
