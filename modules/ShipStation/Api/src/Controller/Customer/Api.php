@@ -286,7 +286,7 @@ class Api extends \XLite\Controller\Customer\ACustomer
                     $this->addFieldToXML("Country", $objShippingAddress->getCountry()->getCountry());
                     $this->addFieldToXML("CountryCode", $objShippingAddress->getCountry()->getCode());
                 }
-                $this->addFieldToXML("Company", $objBillingAddress->getCompanyName());
+                $this->addFieldToXML("Company", $objShippingAddress->getCompanyName());
                 $this->addFieldToXML("Phone", $objShippingAddress->getPhone());
                 $this->addFieldToXML("Email", $objOrder->getProfile()->getLogin());
                 $this->xmlData .= "\t</ShipTo>\n";

@@ -42,26 +42,6 @@ final class ShipStationBundle extends Bundle
     }
 
     /**
-     * Get module major version
-     *
-     * @return string
-     */
-    public static function getMajorVersion() 
-    {
-        return '5.4';
-    }
-
-    /**
-     * Module version
-     *
-     * @return string
-     */
-    public static function getMinorVersion() 
-    {
-        return '2';
-    }
-
-    /**
      * Module description
      *
      * @return string
