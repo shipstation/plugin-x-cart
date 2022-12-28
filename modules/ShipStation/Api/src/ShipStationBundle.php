@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace ShipStation\ShipStation;
+namespace ShipStation\Api;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**

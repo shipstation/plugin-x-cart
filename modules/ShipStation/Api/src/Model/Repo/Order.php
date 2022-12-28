@@ -7,7 +7,7 @@
  * Nor may you transmit it or store it in any other website or other form of electronic retrieval system.
  */
 
-namespace ShipStation\ShipStation\Model\Repo;
+namespace ShipStation\Api\Model\Repo;
 
 use XCart\Extender\Mapping\Extender;
 /**

@@ -7,7 +7,7 @@
  * Nor may you transmit it or store it in any other website or other form of electronic retrieval system.
  */
 
-namespace ShipStation\ShipStation\Controller\Customer;
+namespace ShipStation\Api\Controller\Customer;
 
 /**
  * ShipStation extension controller
