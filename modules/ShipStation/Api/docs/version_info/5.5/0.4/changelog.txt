@@ -1,0 +1,4 @@
+Version 5.5.0.5
+07/24/2023 - [Changes] Removed invalid library `\Includes\Utils\Database` from Order.php file.
+07/24/2023 - [Changes] Refactored Api.php to reduce function nesting.
+07/24/2023 - [Changes] Updated `Order->addOrderTrackingNumber`.
