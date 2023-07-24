@@ -22,8 +22,8 @@ abstract class Order extends \XLite\Model\Repo\Order
     /**
      * Get the order number from last updated dates
      *
-     * @param $dtOrderUpdateStart date
-     * @param $dtOrderUpdateEnd date
+     * @param $dtOrderUpdateStart integer
+     * @param $dtOrderUpdateEnd integer
      * @return  array
      */
     public function getOrdersFromRenewDate($dtOrderUpdateStart = '', $dtOrderUpdateEnd = '') 
@@ -35,27 +35,25 @@ abstract class Order extends \XLite\Model\Repo\Order
                 ->setParameter('lastRenewDateEnd', $dtOrderUpdateEnd);
         return $objQueryBuilder->getResult();
     }
+
     /**
      * Add Tracking number to the order
      *
-     * @param $intOrderNumber integer
+     * @param $order \XLite\Model\Order
      * @param $intTrackingNumber integer
      */
-    public function addOrderTrackingNumber($intOrderNumber = 0, $intTrackingNumber = 0) 
+    public function addOrderTrackingNumber($order = null, $intTrackingNumber = 0)
     {
-        $version = \XLite\Module\ShipStation\Api\Main::getMajorVersion();
-        if (floatval($version) >= 5.4) {
-            \Includes\Utils\Database::execute("INSERT INTO " . \Includes\Utils\Database::getTablesPrefix() . "order_tracking_number (order_id, value, creationDate) VALUES (:order_id, :tracking_number, NOW())", array(
-                ':order_id' => $intOrderNumber,
-                ':tracking_number' => $intTrackingNumber
-            ));
-        } else {
-            \Includes\Utils\Database::execute("INSERT INTO " . \Includes\Utils\Database::getTablesPrefix() . "order_tracking_number (order_id, value) VALUES (:order_id, :tracking_number)", array(
-                ':order_id' => $intOrderNumber,
-                ':tracking_number' => $intTrackingNumber
-            ));
-        }
+        $orderTrackingNumber = new \XLite\Model\OrderTrackingNumber();
+        $orderTrackingNumber->setValue($intTrackingNumber);
+        $orderTrackingNumber->setOrder($order);
+
+        $em = $this->getEntityManager();
+        $em->persist($orderTrackingNumber);
+
+        $em->flush();
     }
+
     /**
      * Set the Shipping Service Mappings
      *

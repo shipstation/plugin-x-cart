@@ -2,6 +2,7 @@ version: '3'
 
 services:
   web:
+    platform: linux/amd64
     build:
       context: .
       tags:
@@ -16,6 +17,7 @@ services:
       - xcart:/var/www/xcart
       - ./modules/ShipStation:/var/www/xcart/modules/ShipStation
   db:
+    platform: linux/amd64
     image: mysql
     volumes:
       - db-data:/var/lib/mysql
@@ -27,6 +29,7 @@ services:
     ports:
       - "3306:3306"
   mail:
+    platform: linux/amd64
     image: mailhog/mailhog
     environment:
       MH_STORAGE: maildir
