@@ -80,66 +80,70 @@ class Api extends \XLite\Controller\Customer\ACustomer
 
     protected function actionStatusUpdate() 
     {
-        if (isset($_GET['order_number']) && $_GET['order_number']) {
-	//\Includes\Utils\FileManager::write(LC_DIR_LOG . 'shipstation.log.php', 'Url ' . $_SERVER['REQUEST_URI'] . PHP_EOL, FILE_APPEND);
-            /**
-             * Check if the order is present in xcart
-             */
-            $objOrder = \XLite\Core\Database::getRepo('XLite\Model\Order')->findOneByOrderNumber(intval($_GET['order_number']));
-            if ($objOrder) {
-                /**
-                 * Change the order shipping status to shipped
-                 * Change the order payment status to paid
-                 * Change the Shipping Method based on service code recived
-                 */
-                $objOrder->setShippingStatus(\XLite\Model\Order\Status\Shipping::STATUS_SHIPPED);
-                $objOrder->setPaymentStatus(\XLite\Model\Order\Status\Payment::STATUS_PAID);
-                if (isset($_GET['shipperServiceID']) && $_GET['shipperServiceID']) {
-                    // Check the shipstation service mapping with the X -Cart.
-                    $serviceCode = \XLite\Core\Database::getRepo('XLite\Model\Order')->getShippingServices($_GET['shipperServiceID']);
-                    
-                    if ($serviceCode) {
-                        $objShippingMethod = \XLite\Core\Database::getRepo('XLite\Model\Shipping\Method')->findOneBy(
-                            array('code' => $serviceCode)
-                        );
-                        if (!empty($objShippingMethod)) {
-                            if ($objShippingMethod->getMethodId()) {
-                                $objOrder->setShippingId($objShippingMethod->getMethodId());
-                            }
-                            if ($objShippingMethod->getName()) {
-                                $objOrder->setShippingMethodName($objShippingMethod->getName());
-                            }
-                        }
-                    }
-                }
-                /**
-                 * Add tracking details
-                 */
-                $arrTrackingValues = array();
-                if ($objOrder->getOrderId() && $_GET['comment']) {
-                    foreach ($objOrder->getTrackingNumbers()as $objTrackingNumber) {
-                        $arrTrackingValues[] = $objTrackingNumber->getValue(); //get the tracking number of order
-                    }
-                    if (!in_array($_GET['comment'], $arrTrackingValues))
-                        \XLite\Core\Database::getRepo('XLite\Model\Order')->addOrderTrackingNumber($objOrder->getOrderId(), $_GET['comment']);
-                }
-
-                \XLite\Core\Database::getEM()->flush(); //clear the cache
-
-                echo 'Status updated successfully';
-            } else {
-                echo 'Order does not exist in database';
-            }
-        } else {
+        if (!isset($_GET['order_number']) || !$_GET['order_number']) {
             echo 'No order number found in action';
+            return;
         }
+
+        /**
+         * Check if the order is present in xcart
+         */
+        $objOrder = \XLite\Core\Database::getRepo('XLite\Model\Order')->findOneByOrderNumber(intval($_GET['order_number']));
+        if (!$objOrder) {
+            echo 'Order does not exist in database';
+            return;
+        }
+
+        /**
+         * Change the order shipping status to shipped
+         * Change the order payment status to paid
+         * Change the Shipping Method based on service code recived
+         */
+        $objOrder->setShippingStatus(\XLite\Model\Order\Status\Shipping::STATUS_SHIPPED);
+        $objOrder->setPaymentStatus(\XLite\Model\Order\Status\Payment::STATUS_PAID);
+        if (!isset($_GET['shipperServiceID']) || !$_GET['shipperServiceID']) {
+            return;
+        }
+
+        // Check the shipstation service mapping with the X -Cart.
+        $serviceCode = \XLite\Core\Database::getRepo('XLite\Model\Order')->getShippingServices($_GET['shipperServiceID']);
+        
+        if ($serviceCode) {
+            $objShippingMethod = \XLite\Core\Database::getRepo('XLite\Model\Shipping\Method')->findOneBy(
+                array('code' => $serviceCode)
+            );
+            if (!empty($objShippingMethod)) {
+                if ($objShippingMethod->getMethodId()) {
+                    $objOrder->setShippingId($objShippingMethod->getMethodId());
+                }
+                if ($objShippingMethod->getName()) {
+                    $objOrder->setShippingMethodName($objShippingMethod->getName());
+                }
+            }
+        }
+
+        /**
+         * Add tracking details
+         */
+        $arrTrackingValues = array();
+        $trackingID = $_GET['comment'];
+        if ($objOrder->getOrderId() && $trackingID) {
+            foreach ($objOrder->getTrackingNumbers()as $objTrackingNumber) {
+                $arrTrackingValues[] = $objTrackingNumber->getValue(); //get the tracking number of order
+            }
+            if (!in_array($trackingID, $arrTrackingValues))
+                \XLite\Core\Database::getRepo('XLite\Model\Order')->addOrderTrackingNumber($objOrder, $trackingID);
+        }
+
+        \XLite\Core\Database::getEM()->flush(); //clear the cache
+
+        echo 'Status updated successfully';
     }
 
     /**
      * Function to generate order export xml
      * 
      */
-
     protected function actionExport() 
     {
         header('Content-Type: text/xml');
